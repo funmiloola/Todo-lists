@@ -200,6 +200,11 @@ li{
        align-items:center;
        padding-left:8px;
     }
+@media(max-width:768px){
+  .todo-details{
+      padding-left:2px;
+      }
+      }
 #icon-delete{
     left:26.5rem;
     position:absolute;
