@@ -173,6 +173,7 @@ article{
    }
 li{
   position:relative;
+  width:312px;
   list-style-type:none;
   margin-left:-2.5rem;
   padding-bottom:0.7rem;
@@ -186,6 +187,7 @@ li{
   padding-bottom:1.2rem;
   padding-top:1.2rem;
   margin-left:0;
+  width:172px
   }
   }
   .emptylist-message{
