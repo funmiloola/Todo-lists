@@ -12,26 +12,29 @@
   <li v-for="(list, index) in filteredLists" :key="index">
   <div class="todo-details">
     <input type="checkbox" id="option1" name="options" v-model="list.isChecked" />
-    <label for="option1" :class="{ 'cancelled': list.isChecked }">{{ list.label }}</label>
+    <label for="option" :class="{ 'cancelled': list.isChecked }">{{ list.label }}</label>
   </div>
   <img src="@/assets/images/icon-cross.svg" alt="delete-icon" id="icon-delete" v-on:click="deleteTodo(index)">
   </li>
+  <div v-if="lists.length === 0">
+      <p class="emptylist-message">You currently have no to-dos.</p>
+    </div>
   </ul>
   <div id="footer">
    <p id="todo-left">{{ quantity() }} items left</p>
    <div class="filtering">
-   <p v-on:click="showAll">All</p>
-   <p v-on:click="incompleteTodo">Active</p>
-   <p v-on:click="completedTodo">Completed</p>
+   <p v-on:click="showAll"  :class="{'selected':selectedSection === 'all'}">All</p>
+   <p v-on:click="incompleteTodo"  :class="{'selected':selectedSection === 'active'}">Active</p>
+   <p v-on:click="completedTodo" :class="{'selected':selectedSection === 'completed'}">Completed</p>
    </div>
-   <p id="todo-cleared" v-on:click="clearCompleted">Clear Completed</p>
+   <p id="todo-cleared" v-on:click="clearCompleted" :disabled="completedTodo.length === 0">Clear Completed</p>
   </div>
   </article>
   </section>
   <div class="filter">
-   <p v-on:click="showAll">All</p>
-   <p v-on:click="incompleteTodo">Active</p>
-   <p v-on:click="completedTodo">Completed</p>
+   <p v-on:click="showAll" :class="{'selected':selectedSection === 'all'}">All</p>
+   <p v-on:click="incompleteTodo" :class="{'selected':selectedSection === 'active'}">Active</p>
+   <p v-on:click="completedTodo" :class="{'selected':selectedSection === 'completed'}">Completed</p>
    </div>
   </main>
   </div>
@@ -45,16 +48,10 @@ export default {
   },
   data(){
     return{
-    lists:[
-     { label:'Complete online Javascript course', icon:'@/assets/images/icon-cross.svg', isChecked:false,},
-     { label:'Jog around the park 3x', icon:'@/assets/images/icon-cross.svg', isChecked:false,},
-     { label:'10 minutes meditation',  icon:'@/assets/images/icon-cross.svg',isChecked:false,},
-     { label:'Read for 1 hour', icon:'@/assets/images/icon-cross.svg', isChecked:false,},
-     { label:'Pick up groceries', icon:'@/assets/images/icon-cross.svg', isChecked:false,},
-     { label:'Complete Todo App on Frontend Mentor', icon:'@/assets/images/icon-cross.svg', isChecked:false,}
-     ],
+    lists:[],
      newTodo:'',
-     filter:'all'
+     filter:'all',
+     selectedSection:'all'
     }
     },
     methods: {
@@ -75,12 +72,15 @@ export default {
     },
     showAll(){
     this.filter = 'all';
-    },
-    completedTodo(){
-    this.filter = 'completed';
+    this.selectedSection = 'all';
     },
     incompleteTodo(){
     this.filter = 'incomplete';
+    this.selectedSection = 'active';
+    },
+    completedTodo(){
+    this.filter = 'completed';
+    this.selectedSection ='completed';
     },
     clearCompleted(){
     this.lists = this.lists.filter((list) => !list.isChecked);
@@ -118,7 +118,7 @@ export default {
    }
 @media(max-width:768px){
    main{
-    left:10%;
+    left:5%;
     top:60px;
     }
   }
@@ -138,8 +138,12 @@ h1{
    #add-todo{
    padding-bottom:1rem;
    padding-top:1rem;
+   padding-right:140px;
    }
    }
+input{
+  outline:none;
+  }
 input[type="checkbox"] {
   appearance: none;
   width: 20px;
@@ -181,33 +185,55 @@ li{
   li {
   padding-bottom:1.2rem;
   padding-top:1.2rem;
+  
   }
   }
+  .emptylist-message{
+     color:hsl(235, 19%, 35%);
+     padding-top:1rem;
+     padding-bottom:0.5rem;
+     margin-left:-2.5rem;
+     text-align:center;
+     }
  .todo-details{
        display:flex;
        gap:10px;
        align-items:center;
+       padding-left:8px;
     }
 #icon-delete{
-    left:28rem;
+    left:26.5rem;
     position:absolute;
     top:0.8rem;
     width:16px;
+    cursor:pointer;
 }
+@media(max-width:768px){
+  #icon-delete{
+    left:18rem;
+    }
+  }
 #footer{
    display:flex;
-   gap:70px;
-   padding-left:10px;
+   gap:60px;
+   padding-left:18px;
    margin-top:-1.2rem;
    font-size:14px;
+   padding-right:4px;
    }
+@media(max-width:768px){
+ #footer{
+  gap:0;
+  padding-left:6px;
+   }
+}
 .filtering{
  display:flex;
  gap:8px;
  color:hsl(234, 11%, 52%);
  cursor:pointer;
  }
- p:active{
+.selected{
   color:blue;
   }
  @media(max-width:768px){
@@ -222,6 +248,14 @@ li{
  color:hsl(234, 39%, 85%);
  cursor:pointer;
  }
+ @media(max-width:768px){
+  #todo-cleared{
+   padding-right:8px;
+   }
+   }
+ #todo-cleared:disabled{
+    cursor:not-allowed;
+    }
 .filter{
   display:flex;
   justify-content:center;
@@ -235,9 +269,6 @@ li{
   margin-top:1rem;
   box-shadow:0px 0px 2px hsl(234, 11%, 52%);
 }
-p:active{
-  color:blue;
-  }
 @media(max-width:768px){
   .filter{ 
     visibility:visible;

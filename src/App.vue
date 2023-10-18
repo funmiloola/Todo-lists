@@ -27,7 +27,7 @@ export default {
    }
 @media(max-width:768px){
    img{
-    width:550px;
+    width:400px;
     height:250px;
     }
   }
