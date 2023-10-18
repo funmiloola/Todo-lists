@@ -9,7 +9,7 @@
   <input type="text" id="add-todo" placeholder="Create a new todo..."   v-model="newTodo"  @keyup.enter="addTodo">
   <article>
   <ul>
-  <li v-for="(list, index) in lists" :key="index">
+  <li v-for="(list, index) in filteredLists" :key="index">
   <div class="todo-details">
     <input type="checkbox" id="option1" name="options" v-model="list.isChecked" />
     <label for="option1" :class="{ 'cancelled': list.isChecked }">{{ list.label }}</label>
@@ -28,7 +28,7 @@
   </div>
   </article>
   </section>
-  <div class="filteriing">
+  <div class="filter">
    <p v-on:click="showAll">All</p>
    <p v-on:click="incompleteTodo">Active</p>
    <p v-on:click="completedTodo">Completed</p>
@@ -53,9 +53,8 @@ export default {
      { label:'Pick up groceries', icon:'@/assets/images/icon-cross.svg', isChecked:false,},
      { label:'Complete Todo App on Frontend Mentor', icon:'@/assets/images/icon-cross.svg', isChecked:false,}
      ],
-     newTodo:'', 
-     completedTodo:false,
-     incompleteTodo:false,
+     newTodo:'',
+     filter:'all'
     }
     },
     methods: {
@@ -75,21 +74,30 @@ export default {
     this.lists.splice(index, 1);
     },
     showAll(){
-    return this.lists
+    this.filter = 'all';
     },
     completedTodo(){
-    this.lists = this.lists.filter((list) => list.isChecked);
+    this.filter = 'completed';
     },
     incompleteTodo(){
-    this.lists = this.lists.filter((list) => !list.isChecked);
+    this.filter = 'incomplete';
     },
     clearCompleted(){
     this.lists = this.lists.filter((list) => !list.isChecked);
     }
-  
-  
-}
-  
+  },
+    computed: {
+    filteredLists() {
+      if (this.filter === 'all') {
+        return this.lists;
+      } else if (this.filter === 'completed') {
+        return this.lists.filter((list) => list.isChecked);
+      } else if (this.filter === 'incomplete') {
+        return this.lists.filter((list) => !list.isChecked);
+      }
+      return this.lists;
+    }
+  }
 }
 </script>
  
@@ -143,7 +151,6 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:checked {
   background-image:url('@/assets/images/icon-check.svg');
-  
   background-color:blue;
 }
 
@@ -200,6 +207,9 @@ li{
  color:hsl(234, 11%, 52%);
  cursor:pointer;
  }
+ p:active{
+  color:blue;
+  }
  @media(max-width:768px){
   .filtering{
    visibility:hidden;
@@ -212,10 +222,7 @@ li{
  color:hsl(234, 39%, 85%);
  cursor:pointer;
  }
-p:active{
-  color:blue;
-  }
-.filteriing{
+.filter{
   display:flex;
   justify-content:center;
   gap:18px;
@@ -228,8 +235,11 @@ p:active{
   margin-top:1rem;
   box-shadow:0px 0px 2px hsl(234, 11%, 52%);
 }
+p:active{
+  color:blue;
+  }
 @media(max-width:768px){
-  .filteriing{ 
+  .filter{ 
     visibility:visible;
     }
   }
