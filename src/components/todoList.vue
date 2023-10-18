@@ -185,7 +185,7 @@ li{
   li {
   padding-bottom:1.2rem;
   padding-top:1.2rem;
-  
+  margin-left:0;
   }
   }
   .emptylist-message{
@@ -224,7 +224,8 @@ li{
 @media(max-width:768px){
  #footer{
   gap:0;
-  padding-left:6px;
+  padding-left:4px;
+  padding-right:0;
    }
 }
 .filtering{
