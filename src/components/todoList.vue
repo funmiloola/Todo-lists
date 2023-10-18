@@ -185,7 +185,6 @@ li{
   li {
   padding-bottom:1.2rem;
   padding-top:1.2rem;
-  margin-left:0;
   }
   }
   .emptylist-message{
@@ -210,7 +209,7 @@ li{
 }
 @media(max-width:768px){
   #icon-delete{
-    left:16rem;
+    left:17rem;
     }
   }
 #footer{
