@@ -1,15 +1,15 @@
 <template>
   <div id="app">
   <img src="@/assets/images/bg-desktop-light.jpg" alt="header-pic">
-  <app-todo></app-todo>
+  <app-todo/>
   </div>
 </template>
 
 <script>
-import todoList from '@/components/todoList.vue/';
+import AppTodo from '@/components/todoList.vue/';
 export default {
   components: {
-   'app-todo':todoList,
+   AppTodo
   }
 }
 </script>
